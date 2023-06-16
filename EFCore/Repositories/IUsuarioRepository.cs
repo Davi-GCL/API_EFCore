@@ -5,7 +5,7 @@ namespace EFCore.Repositories
     public interface IUsuarioRepository
     {
         Task<IEnumerable<Usuario>> Get();
-        Task<Usuario> GetAsync(int id);
+        Task<Usuario> Get(int id);
 
         Task<Usuario> Create(Usuario usuario);
 

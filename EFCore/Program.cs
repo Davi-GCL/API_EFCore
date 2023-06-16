@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using EFCore.Models;
-
+using EFCore.Repositories;
 
 namespace EFCore
 {
@@ -13,6 +13,7 @@ namespace EFCore
             // Add services to the container.
             builder.Services.AddDbContext<SistemaBancoContext>();
             builder.Services.AddControllers();
+            builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();

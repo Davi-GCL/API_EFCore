@@ -1,4 +1,5 @@
 ﻿using EFCore.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace EFCore.Repositories
 {
@@ -21,22 +22,25 @@ namespace EFCore.Repositories
 
         public async Task Delete(int id)
         {
-            throw new NotImplementedException();
+            var toDelete = await _context.Usuarios.FindAsync(id);
+            _context.Usuarios.Remove(toDelete);
+            await _context.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<Usuario>> Get()
+        public async Task<IEnumerable<Usuario>> Get()
         {
-            throw new NotImplementedException();
+            return await _context.Usuarios.ToListAsync();
         }
 
-        public Task<Usuario> GetAsync(int id)
+        public async Task<Usuario> Get(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Usuarios.FindAsync(id);
         }
 
-        public Task Update(Usuario usuario)
+        public async Task Update(Usuario usuario)
         {
-            throw new NotImplementedException();
+            _context.Entry(usuario).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
         }
     }
 }
