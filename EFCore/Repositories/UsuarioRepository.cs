@@ -27,12 +27,12 @@ namespace EFCore.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Usuario>> Get()
+        public async Task<IEnumerable<Usuario>> GetAll()
         {
             return await _context.Usuarios.ToListAsync();
         }
 
-        public async Task<Usuario> Get(int id)
+        public async Task<Usuario> GetById(int id)
         {
             return await _context.Usuarios.FindAsync(id);
         }

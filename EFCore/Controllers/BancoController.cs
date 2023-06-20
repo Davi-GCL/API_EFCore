@@ -18,14 +18,14 @@ namespace EFCore.Controllers
         [HttpGet]
         public async Task<IEnumerable<Usuario>> GetUsuarios()
         {
-            return await _usuarioRepository.Get();
+            return await _usuarioRepository.GetAll();
         }
 
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<ActionResult<Usuario>> GetUsuarios(int id)
         {
-            return await _usuarioRepository.Get(id);
+            return await _usuarioRepository.GetById(id);
         }
 
         [HttpPost]

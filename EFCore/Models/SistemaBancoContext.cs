@@ -23,7 +23,7 @@ public partial class SistemaBancoContext : DbContext
 
     public virtual DbSet<Usuario> Usuarios { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)=> optionsBuilder.UseSqlServer("Password=root;Persist Security Info=True;User ID=sa;Initial Catalog=sistema_banco;Data Source=LUNA-PC\\SQLEXPRESS;TrustServerCertificate=True");
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)=> optionsBuilder.UseSqlServer("Password=root;Persist Security Info=True;User ID=sa;Initial Catalog=sistema_banco;Data Source=OPERACIONAL39\\SQLEXPRESS;TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -37,6 +37,7 @@ public partial class SistemaBancoContext : DbContext
                 .HasMaxLength(25)
                 .IsUnicode(false)
                 .HasColumnName("codConta");
+
             entity.Property(e => e.Agencia)
                 .HasMaxLength(6)
                 .IsUnicode(false)
@@ -51,9 +52,9 @@ public partial class SistemaBancoContext : DbContext
                 .HasColumnName("senha");
             entity.Property(e => e.Tipo).HasColumnName("tipo");
 
-            entity.HasOne(d => d.IdUsuarioNavigation).WithMany(p => p.Conta)
-                .HasForeignKey(d => d.IdUsuario)
-                .HasConstraintName("FK__contas__idUsuari__4CA06362");
+            //entity.HasOne(d => d.IdUsuarioNavigation).WithMany(p => p.Conta)
+            //    .HasForeignKey(d => d.IdUsuario)
+            //    .HasConstraintName("FK__contas__idUsuari__4CA06362");
         });
 
         modelBuilder.Entity<Mov>(entity =>
@@ -79,10 +80,10 @@ public partial class SistemaBancoContext : DbContext
                 .HasColumnType("money")
                 .HasColumnName("valor");
 
-            entity.HasOne(d => d.IdContaNavigation).WithMany(p => p.Movs)
-                .HasForeignKey(d => d.IdConta)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__mov__idConta__571DF1D5");
+            //entity.HasOne(d => d.IdContaNavigation).WithMany(p => p.Movs)
+            //    .HasForeignKey(d => d.IdConta)
+            //    .OnDelete(DeleteBehavior.ClientSetNull)
+            //    .HasConstraintName("FK__mov__idConta__571DF1D5");
         });
 
         modelBuilder.Entity<Usuario>(entity =>
