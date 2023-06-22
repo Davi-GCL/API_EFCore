@@ -9,5 +9,5 @@ public partial class Usuario
 
     public string Nome { get; set; } = null!;
 
-    //public virtual ICollection<Conta> Conta { get; set; } = new List<Conta>();
+    public virtual ICollection<Conta> Conta { get; set; } = new List<Conta>();
 }

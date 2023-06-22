@@ -52,9 +52,9 @@ public partial class SistemaBancoContext : DbContext
                 .HasColumnName("senha");
             entity.Property(e => e.Tipo).HasColumnName("tipo");
 
-            //entity.HasOne(d => d.IdUsuarioNavigation).WithMany(p => p.Conta)
-            //    .HasForeignKey(d => d.IdUsuario)
-            //    .HasConstraintName("FK__contas__idUsuari__4CA06362");
+            entity.HasOne(d => d.IdUsuarioNavigation).WithMany(p => p.Conta)
+                .HasForeignKey(d => d.IdUsuario)
+                .HasConstraintName("FK__contas__idUsuari__4CA06362");
         });
 
         modelBuilder.Entity<Mov>(entity =>
