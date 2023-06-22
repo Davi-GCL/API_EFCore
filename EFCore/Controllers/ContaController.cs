@@ -22,20 +22,20 @@ namespace EFCore.Controllers
         }
 
 
-        [HttpGet("{id:int}")]
+        [HttpGet("GetById/{id:int}")]
         public async Task<ActionResult<Conta>> GetContas(int id)
         {
             return await _contaRepository.GetById(id);
         }
 
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<ActionResult<Conta>> CreateContas([FromBody] Conta conta)
         {
             var novoConta = await _contaRepository.Create(conta);
             return CreatedAtAction(nameof(GetContas), new { id = novoConta.CodConta }, novoConta);
         }
 
-        [HttpPut("Atualizar")]
+        [HttpPut("Update")]
         public async Task<String> UpdateContas([FromBody] Conta conta)
         {
             await _contaRepository.Update(conta);

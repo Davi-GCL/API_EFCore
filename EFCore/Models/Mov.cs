@@ -9,11 +9,11 @@ public partial class Mov
 
     public string IdConta { get; set; } = null!;
 
-    public string? DataHora { get; set; }
+    public DateTime? DataHora { get; set; }
 
     public decimal Valor { get; set; }
 
     public string Tipo { get; set; } = null!;
 
-    public virtual Conta IdContaNavigation { get; set; } = null!;
+    //public virtual Conta IdContaNavigation { get; set; } = null!;
 }
