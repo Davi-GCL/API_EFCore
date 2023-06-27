@@ -29,7 +29,8 @@ namespace EFCore.Repositories
 
         public async Task<IEnumerable<Usuario>> GetAll()
         {
-            return await _context.Usuarios.ToListAsync();
+            //return await _context.Usuarios.ToListAsync();
+            return await _context.Usuarios.Include(u => u.Conta).AsNoTracking().ToListAsync();
         }
 
         public async Task<Usuario> GetById(int id)

@@ -14,15 +14,14 @@ public partial class Conta
 
     public string SetSenha { set 
         {
-            var sha = SHA256.Create();
-            this.Senha = sha.ComputeHash(Encoding.Default.GetBytes(value));
+            Senha = value.GerarHash();
         } }
 
-    public byte[]? Senha { get; set; }
+    public string? Senha { get; set; }
 
     public decimal? Saldo { get; set; }
 
-    public byte Tipo { get; set; }
+    public int Tipo { get; set; }
 
     public int? IdUsuario { get; set; }
 
