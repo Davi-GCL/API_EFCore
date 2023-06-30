@@ -43,5 +43,13 @@ namespace EFCore.Repositories
             _context.Entry(usuario).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
+        //public Task<string> Check(Usuario usuario)
+        //{
+        //    if (usuario)
+        //    {
+        //        return "usuario";
+        //    }
+        //}
+
     }
 }

@@ -43,6 +43,11 @@ namespace EFCore.Controllers
             return $"usuario de id: {usuario.Id} atualizada com sucesso! -> {usuario.ToJson()}";
         }
 
+        [HttpPost("Check")]
+        public async Task<String> Check([FromBody] string i)
+        {
+            return $"I:{i}";
+        }
 
     }
 }

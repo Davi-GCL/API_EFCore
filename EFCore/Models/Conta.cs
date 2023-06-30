@@ -21,7 +21,7 @@ public partial class Conta
 
     public decimal? Saldo { get; set; }
 
-    public int Tipo { get; set; }
+    public byte Tipo { get; set; }
 
     public int? IdUsuario { get; set; }
 
