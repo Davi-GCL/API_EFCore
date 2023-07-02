@@ -28,5 +28,5 @@ public partial class Conta
 
     public virtual Usuario? IdUsuarioNavigation { get; set; }
 
-    public virtual ICollection<Mov> Movs { get; set; } = new List<Mov>();
+    //public virtual ICollection<Mov> Movs { get; set; } = new List<Mov>();
 }
