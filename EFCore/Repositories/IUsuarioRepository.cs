@@ -12,5 +12,7 @@ namespace EFCore.Repositories
         Task Update(Usuario usuario);
     
         Task Delete(int id);
+
+        Task<string> Check(UsuarioAuthForm login);
     }
 }

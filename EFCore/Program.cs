@@ -2,6 +2,11 @@ using Microsoft.EntityFrameworkCore;
 using EFCore.Models;
 using EFCore.Repositories;
 
+//Tarefas pendentes:
+// -Criar uma rota de autenticação, para verificar se os dados de usuario recebidos batem com todos os dados de um determinado usuario no banco
+// -Fazer com o que o programa reconheça automaticamente o em qual computador está sendo executado, de casa ou do trabalho, para alterar o nome do host na connection string do banco de dados
+
+
 namespace EFCore
 {
     public class Program
@@ -12,7 +17,7 @@ namespace EFCore
 
             // Add services to the container.
             builder.Services.AddDbContext<SistemaBancoContext>();
-            builder.Services.AddControllers().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore); //Permite a utilizacao de campos relacionais entre tabelas(navigation)
+            builder.Services.AddControllers().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore); //Permite a utilizacao de campos relacionais entre tabelas(navigation), sem ocasionar loop infinito
             builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             builder.Services.AddScoped<IContaRepository, ContaRepository>();
             builder.Services.AddScoped<IMovRepository, MovRepository>();

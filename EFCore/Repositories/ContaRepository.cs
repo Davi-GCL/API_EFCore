@@ -28,8 +28,8 @@ namespace EFCore.Repositories
 
         public async Task<IEnumerable<Conta>> GetAll()
         {
+            return await _context.Contas.Include(u=>u.IdUsuarioNavigation).AsNoTracking().ToListAsync();
             //return await _context.Contas.ToListAsync();
-            return await _context.Contas.Include(u => u.IdUsuarioNavigation).AsNoTracking().ToListAsync();
         }
 
         public async Task<Conta> GetById(int id)

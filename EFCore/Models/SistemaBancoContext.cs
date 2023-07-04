@@ -93,10 +93,26 @@ public partial class SistemaBancoContext : DbContext
             entity.ToTable("usuarios");
 
             entity.Property(e => e.Id).HasColumnName("id");
+
             entity.Property(e => e.Nome)
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("nome");
+
+            entity.Property(e => e.Email)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .HasColumnName("email");
+
+            entity.Property(e => e.Telefone)
+                .HasMaxLength(15)
+                .IsUnicode(false)
+                .HasColumnName("telefone");
+
+            entity.Property(e => e.Cpf)
+                .HasMaxLength(15)
+                .IsUnicode(false)
+                .HasColumnName("cpf");
         });
 
         OnModelCreatingPartial(modelBuilder);

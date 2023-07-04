@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.Intrinsics.Arm;
 using System.Security.Cryptography;
 using System.Text;
+using EFCore.Services;
 
 namespace EFCore.Models;
 
@@ -14,11 +15,10 @@ public partial class Conta
 
     public string SetSenha { set 
         {
-            var sha = SHA256.Create();
-            this.Senha = sha.ComputeHash(Encoding.Default.GetBytes(value));
+            Senha = value.GerarHash();
         } }
 
-    public byte[]? Senha { get; set; }
+    public string? Senha { get; set; }
 
     public decimal? Saldo { get; set; }
 

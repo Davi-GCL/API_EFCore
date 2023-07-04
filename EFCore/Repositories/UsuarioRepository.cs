@@ -1,5 +1,7 @@
 ﻿using EFCore.Models;
+using EFCore.Services;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Protocol;
 
 namespace EFCore.Repositories
 {
@@ -43,5 +45,48 @@ namespace EFCore.Repositories
             _context.Entry(usuario).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
+
+        public async Task<string> Check(UsuarioAuthForm login)
+        {
+
+            login.Senha = login.Senha.GerarHash();
+
+            var array = await _context.Usuarios.ToArrayAsync();
+            var array2 = await _context.Usuarios.Include(u => u.Conta).AsNoTracking().ToArrayAsync();
+
+            foreach (var item in array)
+            {
+                if (item.Cpf == login.Cpf)
+                {
+                    if(item.Senha == login.Senha)
+                    {
+                        return $"Login de CPF e Senha validos!";
+                    }
+                }
+                
+            }
+
+            return $"Usuario com o Cpf: {login.Cpf} Não encontrado!";
+        }
+
+        //public async Task<string> Check(string search)
+        //{
+        //    var array = await _context.Usuarios.ToArrayAsync();
+        //    var array2 = await _context.Usuarios.Include(u => u.Conta).AsNoTracking().ToArrayAsync();
+
+        //    foreach (var item in array2)
+        //    {
+        //        if(item.Nome == search)
+        //        {
+        //            foreach(var i in item.Conta)
+        //            {
+        //                return i.CodConta;
+        //            }
+        //        }
+        //    }
+
+        //    return $"Usuario com o nome: {search} Não encontrado!";
+        //}
+
     }
 }
