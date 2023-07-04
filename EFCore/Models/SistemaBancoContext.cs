@@ -23,7 +23,8 @@ public partial class SistemaBancoContext : DbContext
 
     public virtual DbSet<Usuario> Usuarios { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)=> optionsBuilder.UseSqlServer("Password=root;Persist Security Info=True;User ID=sa;Initial Catalog=sistema_banco;Data Source=LUNA-PC\\SQLEXPRESS;TrustServerCertificate=True");
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseSqlServer($"Password=root;Persist Security Info=True;User ID=sa;Initial Catalog=sistema_banco;Data Source={Environment.MachineName}\\SQLEXPRESS;TrustServerCertificate=True");
+    
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -113,6 +114,10 @@ public partial class SistemaBancoContext : DbContext
                 .HasMaxLength(15)
                 .IsUnicode(false)
                 .HasColumnName("cpf");
+
+            entity.Property(e => e.Senha)
+                .HasMaxLength(100)
+                .HasColumnName("senha");
         });
 
         OnModelCreatingPartial(modelBuilder);
