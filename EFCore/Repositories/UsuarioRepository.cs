@@ -46,7 +46,7 @@ namespace EFCore.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<string> Check(UsuarioAuthForm login)
+        public async Task<bool> Check(UsuarioAuthForm login)
         {
 
             login.Senha = login.Senha.GerarHash();
@@ -60,13 +60,13 @@ namespace EFCore.Repositories
                 {
                     if(item.Senha == login.Senha)
                     {
-                        return $"Login de CPF e Senha validos!";
+                        return true;
                     }
                 }
                 
             }
 
-            return $"Usuario com o Cpf: {login.Cpf} Não encontrado!";
+            return false;
         }
 
         //public async Task<string> Check(string search)

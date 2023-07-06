@@ -13,6 +13,6 @@ namespace EFCore.Repositories
     
         Task Delete(int id);
 
-        Task<string> Check(UsuarioAuthForm login);
+        Task<bool> Check(UsuarioAuthForm login);
     }
 }
