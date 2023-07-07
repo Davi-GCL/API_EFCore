@@ -44,10 +44,18 @@ namespace EFCore.Controllers
         }
 
         [HttpPost("Auth")]
-        public async Task<bool> Auth([FromBody] UsuarioAuthForm loginForm)
+        public async Task<string> Auth([FromBody] UsuarioAuthForm loginForm)
         {
-            var resp = await _usuarioRepository.Check(loginForm);
-            return resp;
+            int resp = await _usuarioRepository.Check(loginForm);
+            bool auxBool; 
+            
+            auxBool = resp > 0;
+            var obj = new
+            {
+                valid = auxBool,
+                id = resp
+            };
+            return obj.ToJson();
         }
 
     }

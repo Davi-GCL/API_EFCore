@@ -46,7 +46,7 @@ namespace EFCore.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<bool> Check(UsuarioAuthForm login)
+        public async Task<int> Check(UsuarioAuthForm login)
         {
 
             login.Senha = login.Senha.GerarHash();
@@ -60,13 +60,13 @@ namespace EFCore.Repositories
                 {
                     if(item.Senha == login.Senha)
                     {
-                        return true;
+                        return item.Id;
                     }
                 }
                 
             }
 
-            return false;
+            return 0;
         }
 
         //public async Task<string> Check(string search)
