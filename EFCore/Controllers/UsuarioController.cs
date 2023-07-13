@@ -30,11 +30,31 @@ namespace EFCore.Controllers
         }
 
         [HttpPost("Create")]
-        public async Task<ActionResult<Usuario>> CreateUsuarios([FromBody] Usuario usuario)
+        public async Task<string> CreateUsuarios([FromBody] Usuario usuario)
         {
-            var novoUsuario = await _usuarioRepository.Create(usuario);
-            return CreatedAtAction(nameof(GetUsuarios), new { id = novoUsuario.Id }, novoUsuario);
+            Usuario novoUsuario;
+
+            try
+            {
+                novoUsuario = await _usuarioRepository.Create(usuario);
+                CreatedAtAction(nameof(GetUsuarios), new { id = novoUsuario.Id }, novoUsuario);
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+            
+            return "Usuario criado com sucesso!";
         }
+
+        //[HttpPost("Create")]
+        //public async Task<ActionResult<Usuario>> CreateUsuarios([FromBody] Usuario usuario)
+        //{
+        //    Usuario novoUsuario;
+
+        //    novoUsuario = await _usuarioRepository.Create(usuario);
+        //    return CreatedAtAction(nameof(GetUsuarios), new { id = novoUsuario.Id }, novoUsuario);
+        //}
 
         [HttpPut("Update")]
         public async Task<String> UpdateUsuarios([FromBody] Usuario usuario)

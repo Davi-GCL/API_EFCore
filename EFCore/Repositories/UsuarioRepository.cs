@@ -2,6 +2,7 @@
 using EFCore.Services;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Protocol;
+using NuGet.Protocol.Plugins;
 
 namespace EFCore.Repositories
 {
@@ -16,6 +17,21 @@ namespace EFCore.Repositories
 
         public async Task<Usuario> Create(Usuario usuario)
         {
+            var array = await _context.Usuarios.ToArrayAsync();
+            var exceptionDict = new Dictionary<string, bool>();
+
+            foreach (var item in array)
+            {
+                if (item.Cpf == usuario.Cpf || item.Email == usuario.Email || item.Telefone == usuario.Telefone)
+                {
+                    exceptionDict.Add("Cpf", item.Cpf == usuario.Cpf);
+                    exceptionDict.Add("Email", item.Email == usuario.Email);
+                    exceptionDict.Add("Telefone", item.Telefone == usuario.Telefone);
+                }  
+            }
+
+            throw new Exception("CPF,Email e Telefone ja existe");
+
             _context.Usuarios.Add(usuario);
             await _context.SaveChangesAsync();
 

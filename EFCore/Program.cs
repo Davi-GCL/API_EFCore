@@ -3,9 +3,8 @@ using EFCore.Models;
 using EFCore.Repositories;
 
 //Tarefas pendentes:
-// -Criar uma rota de autenticação, para verificar se os dados de usuario recebidos batem com todos os dados de um determinado usuario no banco
-// -Fazer com o que o programa reconheça automaticamente o em qual computador está sendo executado, de casa ou do trabalho, para alterar o nome do host na connection string do banco de dados
-
+// -XCriar uma rota de autenticação, para verificar se os dados de usuario recebidos batem com todos os dados de um determinado usuario no banco
+// -XFazer com o que o programa reconheça automaticamente em qual computador está sendo executado, de casa ou do trabalho, para alterar o nome do host na connection string do banco de dados
 
 namespace EFCore
 {

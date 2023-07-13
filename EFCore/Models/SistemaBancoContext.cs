@@ -93,7 +93,7 @@ public partial class SistemaBancoContext : DbContext
 
             entity.ToTable("usuarios");
 
-            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
 
             entity.Property(e => e.Nome)
                 .HasMaxLength(100)
