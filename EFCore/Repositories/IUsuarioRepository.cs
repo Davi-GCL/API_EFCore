@@ -14,5 +14,11 @@ namespace EFCore.Repositories
         Task Delete(int id);
 
         Task<int> Check(UsuarioAuthForm login);
+
+        int GetUserByCPF(string email);
+
+        int GetUserByEmail(string email);
+
+        int GetUserByTel(string telefone);
     }
 }
