@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using EFCore.Repositories;
 using EFCore.Models;
+using EFCore.Services;
 
 namespace EFCore.Controllers
 {
@@ -42,5 +43,62 @@ namespace EFCore.Controllers
             return $"Conta de id: {conta.CodConta} atualizada com sucesso!";
         }
 
+        [HttpPut("/Transactions/Deposit")]
+        public async Task<IActionResult> DepositContas(int id , decimal value)
+        {
+            var conta = await _contaRepository.GetById( id );
+
+            if (conta == null) return BadRequest("Account not found!");
+
+            await _contaRepository.Deposit(conta, value);
+
+            return Ok($"Sucefully deposited {value:C} in id: {id}");
+        }
+
+        [HttpPut("/Transactions/Draw")]
+        public async Task<IActionResult> DrawContas(int id, decimal value, string password)
+        {
+            
+            var conta = await _contaRepository.GetById(id);
+            if (conta == null) return BadRequest("Account not found!");
+            else
+            {
+                try
+                {
+                    await _contaRepository.Draw(conta, value, password.GerarHash());
+                    return Ok($"Balance after withdrawal:{conta.Saldo}");
+                }
+                catch (ArgumentOutOfRangeException ex)
+                {
+                    return BadRequest("OutOfRange: " + ex.Message);
+                }
+                catch (ArgumentException ex)
+                {
+                    return BadRequest("Argument Exception: " + ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest("General Exception: " + ex.Message);
+                }
+            }
+            
+        }
+
+        [HttpPut("/Transactions/Transfer")]
+        public async Task<IActionResult> TransferContas(int senderId, int receiverId, decimal value, string password)
+        {
+            //var contaRemetente = await _contaRepository.GetById(senderId);
+            //var contaDestino = await _contaRepository.GetById(receiverId);
+
+            var result = await DrawContas(senderId, value, password.GerarHash());
+
+            if (result.GetType() == typeof(BadRequestObjectResult)) return result;
+
+            var resultDeposit = await DepositContas(receiverId, value);
+
+            if (resultDeposit.GetType() == typeof(BadRequestObjectResult)) return resultDeposit;
+
+            return Ok("Deposited sucefull!");
+        }
     }
 }

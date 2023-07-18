@@ -35,13 +35,53 @@ namespace EFCore.Repositories
         public async Task<Conta> GetById(int id)
         {
             
-            return await _context.Contas.FindAsync(id.ToString());
+            return await _context.Contas.FindAsync(id);
         }
 
         public async Task Update(Conta conta)
         {
             _context.Entry(conta).State = EntityState.Modified;
             await _context.SaveChangesAsync();
+        }
+
+        public async Task Deposit(Conta conta, decimal value)
+        {
+            if(value < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(value), $"{nameof(value)} should be above zero.");
+            }
+
+            conta.Saldo += value;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task Draw(Conta conta, decimal value, string pwd)
+        {
+            if (value < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(value), $"{nameof(value)} should be above zero.");
+            }
+            if(pwd == conta.Senha) 
+            {
+                if (conta.Saldo < value)
+                {
+                    throw new Exception($"Balance is not enough for draw {value:C}");
+                }
+                else
+                {
+                    conta.Saldo -= value;
+                    await _context.SaveChangesAsync();
+                }
+            }
+            else
+            {
+                throw new ArgumentException("Incorrect password", "password");
+            }
+        }
+
+        public async Task Transfer(Conta conta, decimal value, string pwd)
+        {
+            Console.WriteLine("alou");
         }
     }
 }
