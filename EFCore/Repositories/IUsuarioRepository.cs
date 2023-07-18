@@ -15,7 +15,7 @@ namespace EFCore.Repositories
 
         Task<int> Check(UsuarioAuthForm login);
 
-        int GetUserByCPF(string email);
+        int GetUserByCPF(string cpf);
 
         int GetUserByEmail(string email);
 

@@ -34,10 +34,7 @@ public partial class SistemaBancoContext : DbContext
 
             entity.ToTable("contas");
 
-            entity.Property(e => e.CodConta)
-                .HasMaxLength(25)
-                .IsUnicode(false)
-                .HasColumnName("codConta");
+            entity.Property(e => e.CodConta).HasColumnName("codConta").ValueGeneratedOnAdd();
 
             entity.Property(e => e.Agencia)
                 .HasMaxLength(6)

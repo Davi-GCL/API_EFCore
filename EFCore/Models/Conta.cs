@@ -9,7 +9,7 @@ namespace EFCore.Models;
 
 public partial class Conta
 {
-    public string CodConta { get; set; } = null!;
+    public int CodConta { get; set; }
 
     public string? Agencia { get; set; }
 

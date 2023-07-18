@@ -34,14 +34,14 @@ namespace EFCore.Controllers
         {
             Usuario novoUsuario;
             var dadosExistentes = new {
-                cpf = _usuarioRepository.GetUserByCPF(usuario.Cpf) != 0 ,
-                email = _usuarioRepository.GetUserByEmail(usuario.Email) != 0 ,
-                telefone = _usuarioRepository.GetUserByTel(usuario.Telefone) != 0
+                Cpf = _usuarioRepository.GetUserByCPF(usuario.Cpf) != 0 ,
+                Email = _usuarioRepository.GetUserByEmail(usuario.Email) != 0 ,
+                Telefone = _usuarioRepository.GetUserByTel(usuario.Telefone) != 0
             };
 
-            if ( dadosExistentes.cpf ||
-                 dadosExistentes.email ||
-                 dadosExistentes.telefone )
+            if ( dadosExistentes.Cpf ||
+                 dadosExistentes.Email ||
+                 dadosExistentes.Telefone )
             {
                 return BadRequest(dadosExistentes.ToJson());
             }
