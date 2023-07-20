@@ -2,6 +2,7 @@
 using EFCore.Repositories;
 using EFCore.Models;
 using EFCore.Services;
+using System.Drawing;
 
 namespace EFCore.Controllers
 {
@@ -87,18 +88,44 @@ namespace EFCore.Controllers
         [HttpPut("/Transactions/Transfer")]
         public async Task<IActionResult> TransferContas(int senderId, int receiverId, decimal value, string password)
         {
-            //var contaRemetente = await _contaRepository.GetById(senderId);
-            //var contaDestino = await _contaRepository.GetById(receiverId);
 
-            var result = await DrawContas(senderId, value, password.GerarHash());
+            var contaRemetente = await _contaRepository.GetById(senderId);
+            var contaDestino = await _contaRepository.GetById(receiverId);
 
-            if (result.GetType() == typeof(BadRequestObjectResult)) return result;
+            if (contaRemetente == null) return BadRequest("Sender account not found!");
+            else if (contaDestino == null) return BadRequest("Receiver account not found!");
+            else
+            {
+                try
+                {
+                    await _contaRepository.Transfer(contaRemetente, contaDestino, value, password);
+                    
+                }
+                catch (ArgumentOutOfRangeException ex)
+                {
+                    return BadRequest("Out of Range: " + ex.Message);
+                }
+                catch (ArgumentException ex)
+                {
+                    return BadRequest("Argument Exception: " + ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest("General Exception: " + ex.Message);
+                }
+                
+                return Ok($"Balance after withdrawal:{contaRemetente.Saldo}");
+            }
 
-            var resultDeposit = await DepositContas(receiverId, value);
+            //var result = await DrawContas(senderId, value, password);
 
-            if (resultDeposit.GetType() == typeof(BadRequestObjectResult)) return resultDeposit;
+            //if (result.GetType() == typeof(BadRequestObjectResult)) return result;
 
-            return Ok("Deposited sucefull!");
+            //var resultDeposit = await DepositContas(receiverId, value);
+
+            //if (resultDeposit.GetType() == typeof(BadRequestObjectResult)) return resultDeposit;
+
+            //return Ok("Deposited sucefully!");
         }
     }
 }

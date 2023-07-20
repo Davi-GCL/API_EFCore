@@ -16,5 +16,7 @@ namespace EFCore.Repositories
         Task Deposit(Conta conta, decimal value);
 
         Task Draw(Conta conta, decimal value, string pwd);
+
+        Task Transfer(Conta senderAccount, Conta receiverAccount, decimal value, string password);
     }
 }

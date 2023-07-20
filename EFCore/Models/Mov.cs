@@ -7,7 +7,7 @@ public partial class Mov
 {
     public int IdMov { get; set; }
 
-    public string IdConta { get; set; } = null!;
+    public int IdConta { get; set; }
 
     public DateTime? DataHora { get; set; }
 

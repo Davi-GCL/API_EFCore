@@ -1,5 +1,9 @@
 ﻿using EFCore.Models;
+using EFCore.Services;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
+using NuGet.Protocol.Plugins;
+using System.Drawing;
 
 namespace EFCore.Repositories
 {
@@ -52,11 +56,13 @@ namespace EFCore.Repositories
             }
 
             conta.Saldo += value;
+
             await _context.SaveChangesAsync();
         }
 
         public async Task Draw(Conta conta, decimal value, string pwd)
         {
+            pwd = pwd.GerarHash();
             if (value < 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(value), $"{nameof(value)} should be above zero.");
@@ -79,9 +85,25 @@ namespace EFCore.Repositories
             }
         }
 
-        public async Task Transfer(Conta conta, decimal value, string pwd)
+        public void History(int idConta, decimal valor, string tipo)
         {
-            Console.WriteLine("alou");
+            var aux = new Mov() { 
+                IdConta = idConta,
+                Valor = valor,
+                DataHora = DateTime.Now,
+                Tipo = tipo
+            };
+
+            _context.Movs.Add(aux);
+            _context.SaveChanges();
+        }
+
+        public async Task Transfer(Conta senderAccount, Conta receiverAccount, decimal value, string password)
+        {
+            await Draw(senderAccount, value, password);
+            await Deposit(receiverAccount, value);
+            History(senderAccount.CodConta, (-1)*value, "Transferencia");
+            History(receiverAccount.CodConta, value, "Transferencia");
         }
     }
 }
