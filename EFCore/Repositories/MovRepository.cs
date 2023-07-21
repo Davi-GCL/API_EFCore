@@ -37,6 +37,11 @@ namespace EFCore.Repositories
             return await _context.Movs.FindAsync(id);
         }
 
+        public async Task<List<Mov>> GetListByConta(int id)
+        {
+            return await _context.Movs.Where(u=>u.IdConta == id).ToListAsync();
+        }
+
         public async Task Update(Mov mov)
         {
             _context.Entry(mov).State = EntityState.Modified;

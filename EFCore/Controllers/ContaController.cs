@@ -86,11 +86,11 @@ namespace EFCore.Controllers
         }
 
         [HttpPut("/Transactions/Transfer")]
-        public async Task<IActionResult> TransferContas(int senderId, int receiverId, decimal value, string password)
+        public async Task<IActionResult> TransferContas([FromBody]TransferForm form)
         {
-
-            var contaRemetente = await _contaRepository.GetById(senderId);
-            var contaDestino = await _contaRepository.GetById(receiverId);
+            
+            var contaRemetente = await _contaRepository.GetById(form.senderId);
+            var contaDestino = await _contaRepository.GetById(form.receiverId);
 
             if (contaRemetente == null) return BadRequest("Sender account not found!");
             else if (contaDestino == null) return BadRequest("Receiver account not found!");
@@ -98,7 +98,7 @@ namespace EFCore.Controllers
             {
                 try
                 {
-                    await _contaRepository.Transfer(contaRemetente, contaDestino, value, password);
+                    await _contaRepository.Transfer(contaRemetente, contaDestino, form.value, form.password);
                     
                 }
                 catch (ArgumentOutOfRangeException ex)
@@ -114,7 +114,7 @@ namespace EFCore.Controllers
                     return BadRequest("General Exception: " + ex.Message);
                 }
                 
-                return Ok($"Balance after withdrawal:{contaRemetente.Saldo}");
+                return Ok($"Balance after withdrawal: {contaRemetente.Saldo}");
             }
 
             //var result = await DrawContas(senderId, value, password);
@@ -127,5 +127,13 @@ namespace EFCore.Controllers
 
             //return Ok("Deposited sucefully!");
         }
+    }
+    public class TransferForm
+    {
+        public int senderId { get; set; }
+        public int receiverId { get; set; }
+        public decimal value { get; set; }
+        public string password { get; set; } = null!;
+
     }
 }

@@ -7,6 +7,8 @@ namespace EFCore.Repositories
         Task<IEnumerable<Mov>> GetAll();
         Task<Mov> GetById(int id);
 
+        Task<List<Mov>> GetListByConta(int id);
+
         Task<Mov> Create(Mov mov);
 
         Task Update(Mov mov);

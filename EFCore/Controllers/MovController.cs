@@ -21,11 +21,16 @@ namespace EFCore.Controllers
             return await _movRepository.GetAll();
         }
 
-
         [HttpGet("GetById/{id:int}")]
         public async Task<ActionResult<Mov>> GetMovs(int id)
         {
             return await _movRepository.GetById(id);
+        }
+
+        [HttpGet("GetListByIdConta/{id:int}")]
+        public async Task<IEnumerable<Mov>> GetMovsByIdConta(int id)
+        {
+            return await _movRepository.GetListByConta(id);
         }
 
         [HttpPost("Create")]
