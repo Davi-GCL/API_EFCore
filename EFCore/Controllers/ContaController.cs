@@ -3,6 +3,7 @@ using EFCore.Repositories;
 using EFCore.Models;
 using EFCore.Services;
 using System.Drawing;
+using NuGet.Protocol;
 
 namespace EFCore.Controllers
 {
@@ -53,7 +54,7 @@ namespace EFCore.Controllers
 
             await _contaRepository.Deposit(conta, value);
 
-            return Ok($"Sucefully deposited {value:C} in id: {id}");
+            return Ok((new {codConta=id , value=value , result=conta.Saldo}).ToJson());
         }
 
         [HttpPut("/Transactions/Draw")]
