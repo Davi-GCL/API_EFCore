@@ -58,17 +58,21 @@ namespace EFCore.Controllers
         }
 
         [HttpPut("/Transactions/Draw")]
-        public async Task<IActionResult> DrawContas(int id, decimal value, string password)
+        public async Task<IActionResult> DrawContas([FromBody]DrawForm form)
         {
-            
+
+            int id = form.codConta;
+            decimal value = form.valor;
+            string password = form.senha;
+
             var conta = await _contaRepository.GetById(id);
             if (conta == null) return BadRequest("Account not found!");
             else
             {
                 try
                 {
-                    await _contaRepository.Draw(conta, value, password.GerarHash());
-                    return Ok($"Balance after withdrawal:{conta.Saldo}");
+                    await _contaRepository.Draw(conta, value, password);
+                    return Ok((new { codConta = id, value = value, result = conta.Saldo }).ToJson());
                 }
                 catch (ArgumentOutOfRangeException ex)
                 {
@@ -83,15 +87,44 @@ namespace EFCore.Controllers
                     return BadRequest("General Exception: " + ex.Message);
                 }
             }
-            
+
         }
+
+        //[HttpPut("/Transactions/Draw")]
+        //public async Task<IActionResult> DrawContas(int id, decimal value, string password)
+        //{
+
+        //    var conta = await _contaRepository.GetById(id);
+        //    if (conta == null) return BadRequest("Account not found!");
+        //    else
+        //    {
+        //        try
+        //        {
+        //            await _contaRepository.Draw(conta, value, password.GerarHash());
+        //            return Ok($"Balance after withdrawal:{conta.Saldo}");
+        //        }
+        //        catch (ArgumentOutOfRangeException ex)
+        //        {
+        //            return BadRequest("OutOfRange: " + ex.Message);
+        //        }
+        //        catch (ArgumentException ex)
+        //        {
+        //            return BadRequest("Argument Exception: " + ex.Message);
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            return BadRequest("General Exception: " + ex.Message);
+        //        }
+        //    }
+
+        //}
 
         [HttpPut("/Transactions/Transfer")]
         public async Task<IActionResult> TransferContas([FromBody]TransferForm form)
         {
             
-            var contaRemetente = await _contaRepository.GetById(form.senderId);
-            var contaDestino = await _contaRepository.GetById(form.receiverId);
+            var contaRemetente = await _contaRepository.GetById(form.idRemetente);
+            var contaDestino = await _contaRepository.GetById(form.idDestinatario);
 
             if (contaRemetente == null) return BadRequest("Sender account not found!");
             else if (contaDestino == null) return BadRequest("Receiver account not found!");
@@ -99,7 +132,7 @@ namespace EFCore.Controllers
             {
                 try
                 {
-                    await _contaRepository.Transfer(contaRemetente, contaDestino, form.value, form.password);
+                    await _contaRepository.Transfer(contaRemetente, contaDestino, form.valor, form.senha);
                     
                 }
                 catch (ArgumentOutOfRangeException ex)
@@ -131,10 +164,19 @@ namespace EFCore.Controllers
     }
     public class TransferForm
     {
-        public int senderId { get; set; }
-        public int receiverId { get; set; }
-        public decimal value { get; set; }
-        public string password { get; set; } = null!;
+        public int idRemetente { get; set; }
+        public int idDestinatario { get; set; }
+        public decimal valor { get; set; }
+        public string senha { get; set; } = null!;
 
     }
+
+    public class DrawForm
+    {
+        public int codConta { get; set; }
+        public decimal valor { get; set; }
+        public string senha { get; set; } = null!;
+
+    }
+
 }
