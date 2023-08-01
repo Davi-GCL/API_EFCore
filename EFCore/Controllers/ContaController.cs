@@ -4,6 +4,7 @@ using EFCore.Models;
 using EFCore.Services;
 using System.Drawing;
 using NuGet.Protocol;
+using Newtonsoft.Json.Linq;
 
 namespace EFCore.Controllers
 {
@@ -90,35 +91,6 @@ namespace EFCore.Controllers
 
         }
 
-        //[HttpPut("/Transactions/Draw")]
-        //public async Task<IActionResult> DrawContas(int id, decimal value, string password)
-        //{
-
-        //    var conta = await _contaRepository.GetById(id);
-        //    if (conta == null) return BadRequest("Account not found!");
-        //    else
-        //    {
-        //        try
-        //        {
-        //            await _contaRepository.Draw(conta, value, password.GerarHash());
-        //            return Ok($"Balance after withdrawal:{conta.Saldo}");
-        //        }
-        //        catch (ArgumentOutOfRangeException ex)
-        //        {
-        //            return BadRequest("OutOfRange: " + ex.Message);
-        //        }
-        //        catch (ArgumentException ex)
-        //        {
-        //            return BadRequest("Argument Exception: " + ex.Message);
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            return BadRequest("General Exception: " + ex.Message);
-        //        }
-        //    }
-
-        //}
-
         [HttpPut("/Transactions/Transfer")]
         public async Task<IActionResult> TransferContas([FromBody]TransferForm form)
         {
@@ -133,7 +105,7 @@ namespace EFCore.Controllers
                 try
                 {
                     await _contaRepository.Transfer(contaRemetente, contaDestino, form.valor, form.senha);
-                    
+                    return Ok((new { codConta = contaRemetente.CodConta, value = form.valor, result = contaRemetente.Saldo }).ToJson());
                 }
                 catch (ArgumentOutOfRangeException ex)
                 {
@@ -148,7 +120,7 @@ namespace EFCore.Controllers
                     return BadRequest("General Exception: " + ex.Message);
                 }
                 
-                return Ok($"Balance after withdrawal: {contaRemetente.Saldo}");
+                
             }
 
             //var result = await DrawContas(senderId, value, password);

@@ -72,6 +72,12 @@ namespace EFCore.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task UpdatePassword(Usuario usuario, string password)
+        {
+            usuario.SetSenha = password;
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<int> Check(UsuarioAuthForm login)
         {
 

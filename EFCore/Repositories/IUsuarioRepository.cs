@@ -10,7 +10,9 @@ namespace EFCore.Repositories
         Task<Usuario> Create(Usuario usuario);
 
         Task Update(Usuario usuario);
-    
+
+        Task UpdatePassword(Usuario usuario, string password);
+
         Task Delete(int id);
 
         Task<int> Check(UsuarioAuthForm login);
