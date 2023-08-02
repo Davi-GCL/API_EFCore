@@ -57,6 +57,7 @@ namespace EFCore.Repositories
 
             conta.Saldo += value;
 
+            RecordTransaction(conta.CodConta, value, "1");
             await _context.SaveChangesAsync();
         }
 
@@ -76,6 +77,7 @@ namespace EFCore.Repositories
                 else
                 {
                     conta.Saldo -= value;
+                    RecordTransaction(conta.CodConta, value, "2");
                     await _context.SaveChangesAsync();
                 }
             }
@@ -84,8 +86,24 @@ namespace EFCore.Repositories
                 throw new ArgumentException("Incorrect password", "password");
             }
         }
+        public void RecordTransaction(int idConta, decimal valor, string tipo)
+        {
+            //Numeração correspondente a cada tipo de movimentação:
+            // 1 -> Deposito
+            // 2 -> Saque
+            // 3 -> Transferencia
+            var aux = new Mov()
+            {
+                IdConta = idConta,
+                Valor = valor,
+                DataHora = DateTime.Now,
+                Tipo = tipo
+            };
 
-        public void History(int idConta, decimal valor, string tipo)
+            _context.Movs.Add(aux);
+        }
+
+        public void SaveRecordTransaction(int idConta, decimal valor, string tipo)
         {
             var aux = new Mov() { 
                 IdConta = idConta,
@@ -102,8 +120,9 @@ namespace EFCore.Repositories
         {
             await Draw(senderAccount, value, password);
             await Deposit(receiverAccount, value);
-            History(senderAccount.CodConta, (-1)*value, "Transferencia");
-            History(receiverAccount.CodConta, value, "Transferencia");
+            RecordTransaction(senderAccount.CodConta, (-1)*value, "3");
+            RecordTransaction(receiverAccount.CodConta, value, "3");
+            _context.SaveChanges();
         }
     }
 }

@@ -2,6 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using System.Drawing;
 
+//Numeração correspondente a cada tipo de movimentação:
+// 1 -> Deposito
+// 2 -> Saque
+// 3 -> Transferencia
 namespace EFCore.Repositories
 {
     public class MovRepository : IMovRepository
