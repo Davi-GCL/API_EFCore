@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using EFCore.Repositories;
 using EFCore.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EFCore.Controllers
 {
@@ -15,24 +16,28 @@ namespace EFCore.Controllers
             _movRepository = movRepository;
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IEnumerable<Mov>> GetMovs()
         {
             return await _movRepository.GetAll();
         }
 
+        [Authorize]
         [HttpGet("GetById/{id:int}")]
         public async Task<ActionResult<Mov>> GetMovs(int id)
         {
             return await _movRepository.GetById(id);
         }
 
+        [Authorize]
         [HttpGet("GetListByIdConta/{id:int}")]
         public async Task<IEnumerable<Mov>> GetMovsByIdConta(int id)
         {
             return await _movRepository.GetListByConta(id);
         }
 
+        [Authorize]
         [HttpPost("Create")]
         public async Task<ActionResult<Mov>> CreateMovs([FromBody] Mov mov)
         {
@@ -40,6 +45,7 @@ namespace EFCore.Controllers
             return CreatedAtAction(nameof(GetMovs), new { id = novoMov.IdMov }, novoMov);
         }
 
+        [Authorize]
         [HttpPut("Update")]
         public async Task<String> UpdateMovs([FromBody] Mov mov)
         {

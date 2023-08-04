@@ -3,6 +3,7 @@ using EFCore.Repositories;
 using EFCore.Models;
 using NuGet.Protocol;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EFCore.Controllers
 {
@@ -64,6 +65,7 @@ namespace EFCore.Controllers
         //    return CreatedAtAction(nameof(GetUsuarios), new { id = novoUsuario.Id }, novoUsuario);
         //}
 
+        [Authorize]
         [HttpPost("Update")]
         public async Task<String> UpdateUsuarios([FromBody] Usuario usuario)
         {
@@ -72,8 +74,9 @@ namespace EFCore.Controllers
             return $"usuario de id: {usuario.Id} atualizada com sucesso! -> {usuario.ToJson()}";
         }
 
+
         [HttpPost("Update/Password")]
-        public async Task<IActionResult> UpdateUsuarios([FromBody]UpdateForm Form)
+        public async Task<IActionResult> UpdateSenha([FromBody]UpdateForm Form)
         {
             int userId = _usuarioRepository.GetUserByCPF(Form.Cpf);
             var User = await _usuarioRepository.GetById(userId);
@@ -121,11 +124,11 @@ namespace EFCore.Controllers
         //        Console.WriteLine(properties[i].Name+": "+ properties[i].GetValue(obj));
         //    }
         //}
-        public class UpdateForm
-        {
-            public string Cpf { get; set; } = null!;
-            public string Email { get; set; } = null!;
-            public string Senha { get; set; } = null!;
-        }
+    }
+    public class UpdateForm
+    {
+        public string Cpf { get; set; } = null!;
+        public string Email { get; set; } = null!;
+        public string Senha { get; set; } = null!;
     }
 }

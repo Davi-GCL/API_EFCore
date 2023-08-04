@@ -5,6 +5,7 @@ using EFCore.Services;
 using System.Drawing;
 using NuGet.Protocol;
 using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EFCore.Controllers
 {
@@ -25,7 +26,15 @@ namespace EFCore.Controllers
             return await _contaRepository.GetAll();
         }
 
+        [Authorize]
+        [HttpGet]
+        [Route("TESTE")]
+        public string TESTE()
+        {
+            return String.Format("{0}", User.Identity.Name);
+        }
 
+        [Authorize]
         [HttpGet("GetById/{id:int}")]
         public async Task<ActionResult<Conta>> GetContas(int id)
         {
@@ -39,6 +48,7 @@ namespace EFCore.Controllers
             return CreatedAtAction(nameof(GetContas), new { id = novoConta.CodConta }, novoConta);
         }
 
+        [Authorize]
         [HttpPut("Update")]
         public async Task<String> UpdateContas([FromBody] Conta conta)
         {
@@ -46,6 +56,7 @@ namespace EFCore.Controllers
             return $"Conta de id: {conta.CodConta} atualizada com sucesso!";
         }
 
+        [Authorize]
         [HttpPut("/Transactions/Deposit")]
         public async Task<IActionResult> DepositContas(int id , decimal value)
         {
@@ -58,6 +69,7 @@ namespace EFCore.Controllers
             return Ok((new {codConta=id , value=value , result=conta.Saldo}).ToJson());
         }
 
+        [Authorize]
         [HttpPut("/Transactions/Draw")]
         public async Task<IActionResult> DrawContas([FromBody]DrawForm form)
         {
@@ -91,6 +103,7 @@ namespace EFCore.Controllers
 
         }
 
+        [Authorize]
         [HttpPut("/Transactions/Transfer")]
         public async Task<IActionResult> TransferContas([FromBody]TransferForm form)
         {
