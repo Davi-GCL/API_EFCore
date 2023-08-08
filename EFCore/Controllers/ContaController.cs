@@ -21,14 +21,15 @@ namespace EFCore.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IEnumerable<Conta>> GetContas()
         {
             return await _contaRepository.GetAll();
         }
 
-        [Authorize]
         [HttpGet]
         [Route("TESTE")]
+        [Authorize]
         public string TESTE()
         {
             return String.Format("{0}", User.Identity.Name);
@@ -48,16 +49,16 @@ namespace EFCore.Controllers
             return CreatedAtAction(nameof(GetContas), new { id = novoConta.CodConta }, novoConta);
         }
 
-        [Authorize]
         [HttpPut("Update")]
+        [Authorize]
         public async Task<String> UpdateContas([FromBody] Conta conta)
         {
             await _contaRepository.Update(conta);
             return $"Conta de id: {conta.CodConta} atualizada com sucesso!";
         }
 
-        [Authorize]
         [HttpPut("/Transactions/Deposit")]
+        [Authorize(Roles = "client")]
         public async Task<IActionResult> DepositContas(int id , decimal value)
         {
             var conta = await _contaRepository.GetById( id );
@@ -69,8 +70,8 @@ namespace EFCore.Controllers
             return Ok((new {codConta=id , value=value , result=conta.Saldo}).ToJson());
         }
 
-        [Authorize]
         [HttpPut("/Transactions/Draw")]
+        [Authorize(Roles = "client")]
         public async Task<IActionResult> DrawContas([FromBody]DrawForm form)
         {
 
@@ -103,8 +104,8 @@ namespace EFCore.Controllers
 
         }
 
-        [Authorize]
         [HttpPut("/Transactions/Transfer")]
+        [Authorize(Roles = "client")]
         public async Task<IActionResult> TransferContas([FromBody]TransferForm form)
         {
             

@@ -19,17 +19,18 @@ namespace EFCore.Controllers
             _usuarioRepository = usuarioRepository;
         }
 
-        [HttpPost("AuthUsuario")]
-        public async Task<IActionResult> AuthUsuario([FromBody]UsuarioAuthForm loginForm)
+        [HttpPost("LoginUsuario")]
+        public async Task<IActionResult> LoginUsuario([FromBody]UsuarioAuthForm loginForm)
         {
             int usuarioId = await _usuarioRepository.Check(loginForm);
             if (usuarioId > 0) {
                 var usuario = await _usuarioRepository.GetById(usuarioId);
-                var token = TokenServices.generateToken(usuario);
-                return Ok(token);
+                var token = TokenServices.generateToken(usuario, "client");
+
+                return Ok(new {id=usuarioId , valid = true, token = token});
             }
 
-            return BadRequest("Username or password invalid");
+            return BadRequest("invalid Cpf or password");
         }
 
         //[HttpPost("Auth")]
