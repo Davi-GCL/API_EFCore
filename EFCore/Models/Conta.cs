@@ -4,6 +4,7 @@ using System.Runtime.Intrinsics.Arm;
 using System.Security.Cryptography;
 using System.Text;
 using EFCore.Services;
+using Newtonsoft.Json;
 
 namespace EFCore.Models;
 
@@ -26,6 +27,7 @@ public partial class Conta
 
     public int? IdUsuario { get; set; }
 
+    [JsonIgnore]
     public virtual Usuario? IdUsuarioNavigation { get; set; }
 
     //public virtual ICollection<Mov> Movs { get; set; } = new List<Mov>();

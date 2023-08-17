@@ -38,9 +38,7 @@ namespace EFCore.Repositories
         }
 
         public async Task<Usuario> Create(Usuario usuario)
-        {
-
-            var array = await _context.Usuarios.ToArrayAsync();           
+        {          
 
             _context.Usuarios.Add(usuario);
             await _context.SaveChangesAsync();

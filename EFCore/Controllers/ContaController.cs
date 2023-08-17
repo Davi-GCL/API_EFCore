@@ -27,19 +27,19 @@ namespace EFCore.Controllers
             return await _contaRepository.GetAll();
         }
 
-        [HttpGet]
-        [Route("TESTE")]
-        [Authorize]
-        public string TESTE()
-        {
-            return String.Format("{0}", User.Identity.Name);
-        }
-
         [Authorize]
         [HttpGet("GetById/{id:int}")]
         public async Task<ActionResult<Conta>> GetContas(int id)
         {
             return await _contaRepository.GetById(id);
+        }
+
+        [Authorize]
+        [HttpGet("GetByUserId/{id:int}")]
+        public async Task<ActionResult<Conta>> GetContasByUser(int id)
+        {
+            var aux = await _contaRepository.GetAll();
+            return Ok(aux.Where(c => c.IdUsuario == id).ToJson());
         }
 
         [HttpPost("Create")]

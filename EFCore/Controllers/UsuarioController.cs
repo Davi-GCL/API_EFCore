@@ -28,9 +28,11 @@ namespace EFCore.Controllers
         [HttpGet("GetById/{id:int}")]
         public async Task<ActionResult<Usuario>> GetUsuarios(int id)
         {
-            return await _usuarioRepository.GetById(id);
+            var aux = await _usuarioRepository.GetById(id);
+            
+            return Ok(aux.ToJson());
         }
-
+        [AllowAnonymous]
         [HttpPost("Create")]
         public async Task<IActionResult> CreateUsuarios([FromBody] Usuario usuario)
         {
